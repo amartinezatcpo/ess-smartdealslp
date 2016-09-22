@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="ltr">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=9">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0">
+    
+	<title>Seasonal Spotlight</title>
+    
+	<!-- Style Sheet -->
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+</head>
+
+<body id="ESS-3PV-WidgetContainer">
+    <div id="container" class="ess-lpcontainer" data-pageType="Landing Page" data-lpid="Test Seasonal Spotlight">
+        <div id="header" class="maxWidth ess-zone" data-zoneName="hero" data-zoneId="">
+			<img class="coffeeSmiley" src="coffeeSmiley.png"/>
+				<div class="headerCopy">
+				<h1 class="uppercase bold">it's time to stock up and snack happy.</h1>
+				<div class="subtext">We make it happen with next-day delivery of office favorites in office-sized packs - all priced to make you <span class="smile">smile<div class="smileLine"></div></span>.</div>
+			</div>
+		</div>
+		<div id="promos" class="maxWidth ess-zone" data-zoneName="featPromos" data-zoneId="featPromos-V1">
+			<h2 class="uppercase bold">Great deals just for you...</h2>
+			<div class="swiper-container promoSwiper">
+				<ul class="promoCont swiper-wrapper">
+					<li class="promo swiper-slide"><a class="ess-link carSlide" href=""><img src="20offHotDrinks.jpg"/></a></li>
+					<li class="promo swiper-slide"><a class="ess-link carSlide" href=""><img src="5offCandy.jpg"/></a></li>
+					<li class="promo swiper-slide"><a class="ess-link carSlide" href=""><img src="20offHotDrinks.jpg"/></a></li>
+					<li class="promo swiper-slide"><a class="ess-link carSlide" href=""><img src="5offCandy.jpg"/></a></li>
+				</ul>
+				<!--[if !IE]> -->
+				<div class="promoSwiper-pagination swiper-pagination"></div>
+				<div class="promoSwiper-button-prev swiper-button-prev"></div>
+    			<div class="promoSwiper-button-next swiper-button-next"></div>
+				<!-- <![endif]-->
+			</div>
+		</div>
+		<div id="prodTiles" class="maxWidth ess-zone" data-zoneName="featProds" data-zoneId="featProds-20170101-20170131">
+			<div class="prodSwiper swiper-container">
+				<div id="titleLinkCont" class="titleLinks">
+					<!-- Title Links Appended here -->
+				</div>
+				<div id="prodTileCont" class="prodTiles swiper-wrapper">
+					<!-- Prod tiles appended here -->
+				</div>
+			</div>
+		</div>
+	</div><!-- END: container -->
+    <!-- JS Elements -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	<script>
+		var $j = jQuery.noConflict();
+	</script>
+	<script src="prodJsonTest.json"></script> <!-- Product JSON -->
+	<script src="prodContent.js"></script> <!-- Product Content -->
+	
+	<!--[if IE]>
+		<script src="mainIE.js"></script>
+	<![endif]-->
+	<!--[if !IE]> -->
+		<script src="main.js"></script>
+	<!-- <![endif]-->
+    
+</body>
+
+</html>
