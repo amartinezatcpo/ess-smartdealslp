@@ -44,7 +44,6 @@ $(document).ready(function () {
 
   var addBgImg = function(arr, data) {
     arr.forEach(function($val, idx) {
-      console.log($val, data[idx].img);
       $val
         .find('.card-media')
         .css('background-image', 'url(' + data[idx].img + ')');
@@ -54,8 +53,9 @@ $(document).ready(function () {
   }
 
   var every5 = function(arr) {
-    for (var i = 0; i < arr.length; i++) {
-      if ((i) % 6 === 0) {
+    for (var i = arr.length; i > 0; i--) {
+      console.log((i + ' % 5 = '), (i % 5), ((i !== 20) && (i % 5 === 0)));
+      if ((i !== 20) && (i % 5 === 0)) {
         addHorRule(arr, i);
       }
     }
