@@ -68,7 +68,7 @@ $(document).ready(function () {
   }
 
   var insertTmp = function(input) {
-    var target = $('#list-wrapper');
+    var target = $('.list-wrapper');
     input.forEach(function(val, idx) {
       $(val).appendTo(target);
     })

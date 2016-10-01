@@ -29,7 +29,7 @@
 
 .prod-grid__item {
   display: inline-block;
-  width: 48%;
+  width: 50%;
 }
 
 .prod-grid__rule {
@@ -37,9 +37,6 @@
 }
 
 @media (min-width: 768px) {
-  .prod-grid {
-    text-align: initial;
-  }
   .prod-grid__item {
     width: 19%;
   }

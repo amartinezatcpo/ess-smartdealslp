@@ -10,7 +10,7 @@
 }
 
 .card-media {
-  background: center no-repeat;
+  background: center / contain no-repeat;
   padding-bottom: 100%;
 }
 
