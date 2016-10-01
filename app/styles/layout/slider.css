@@ -1,0 +1,28 @@
+.slider-section {
+  background-color: #eeeeee;
+  padding: 1em 0;
+  margin-bottom: 3.125em;
+  overflow: hidden;
+}
+
+.slider-section__heading {
+  text-align: center;
+  margin-top: 0;
+}
+
+.slider-container {
+  padding: 1em 2em;
+  position: relative;
+}
+
+/**
+ * Swiper styles & overrides
+ */
+
+.swiper-slide:first-child {
+  margin-left: 0;
+}
+
+.swiper-slide:last-child {
+  margin-right: 0;
+}

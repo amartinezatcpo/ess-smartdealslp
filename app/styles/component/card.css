@@ -1,0 +1,29 @@
+.card {
+  background-color: #fff;
+  padding: 1em;
+}
+
+.card-link {
+  text-decoration: none;
+  cursor: pointer;
+  color: initial;
+}
+
+.card-media {
+  background: url(http://placehold.it/150x150) center/contain no-repeat;
+  padding-bottom: 100%;
+}
+
+.item-info {
+  margin-top: 1em;
+  text-align: initial;
+  word-wrap: break-word;
+}
+
+.item-sku {
+  color: #b2b2b2;
+}
+
+.item-price {
+  padding-top: 1em;
+}

@@ -1,0 +1,50 @@
+.prod-header {
+  margin-bottom: 1em;
+  text-align: center;
+}
+
+[class^='prod-header__'] {
+  display: block;
+}
+
+.prod-ctrl {
+  position: relative;
+  padding: 16px 0;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-left: 0; border-right: 0;
+}
+
+[class^='prod-ctrl__'] {
+  display: inline-block;
+}
+
+.prod-ctrl__count {
+  position: absolute;
+  right: 0;
+}
+
+.prod-grid {
+  text-align: center;
+}
+
+.prod-grid__item {
+  display: inline-block;
+  width: 48%;
+}
+
+.prod-grid__rule {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .prod-grid {
+    text-align: initial;
+  }
+  .prod-grid__item {
+    width: 19%;
+  }
+
+  .prod-grid__rule {
+    display: block;
+  }
+}
