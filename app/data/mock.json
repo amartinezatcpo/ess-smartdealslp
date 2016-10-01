@@ -8,19 +8,19 @@
     {
       "name": "Tab Dividers",
       "sku": "abcd-ef12",
-      "img": "../../images/ziploc.png",
+      "img": "../../images/dividers.png",
       "price": "1.99"
     },
     {
       "name": "Freezer Bars",
       "sku": "3456-78ab",
-      "img": "../../images/ziploc.png",
+      "img": "../../images/flavor-ice.png",
       "price": "2.99"
     },
     {
       "name": "Post its",
       "sku": "cdef-1234",
-      "img": "../../images/ziploc.png",
+      "img": "../../images/post-it.png",
       "price": "0.99"
     },
     {
@@ -32,19 +32,19 @@
     {
       "name": "Tab Dividers",
       "sku": "abcd-ef12",
-      "img": "../../images/ziploc.png",
+      "img": "../../images/dividers.png",
       "price": "1.99"
     },
     {
       "name": "Freezer Bars",
       "sku": "3456-78ab",
-      "img": "../../images/ziploc.png",
+      "img": "../../images/flavor-ice.png",
       "price": "2.99"
     },
     {
       "name": "Post its",
       "sku": "cdef-1234",
-      "img": "../../images/ziploc.png",
+      "img": "../../images/post-it.png",
       "price": "0.99"
     },
     {
@@ -56,19 +56,19 @@
     {
       "name": "Tab Dividers",
       "sku": "abcd-ef12",
-      "img": "../../images/ziploc.png",
+      "img": "../../images/dividers.png",
       "price": "1.99"
     },
     {
       "name": "Freezer Bars",
       "sku": "3456-78ab",
-      "img": "../../images/ziploc.png",
+      "img": "../../images/flavor-ice.png",
       "price": "2.99"
     },
     {
       "name": "Post its",
       "sku": "cdef-1234",
-      "img": "../../images/ziploc.png",
+      "img": "../../images/post-it.png",
       "price": "0.99"
     },
     {
@@ -80,19 +80,19 @@
     {
       "name": "Tab Dividers",
       "sku": "abcd-ef12",
-      "img": "../../images/ziploc.png",
+      "img": "../../images/dividers.png",
       "price": "1.99"
     },
     {
       "name": "Freezer Bars",
       "sku": "3456-78ab",
-      "img": "../../images/ziploc.png",
+      "img": "../../images/flavor-ice.png",
       "price": "2.99"
     },
     {
       "name": "Post its",
       "sku": "cdef-1234",
-      "img": "../../images/ziploc.png",
+      "img": "../../images/post-it.png",
       "price": "0.99"
     },
     {
@@ -104,19 +104,19 @@
     {
       "name": "Tab Dividers",
       "sku": "abcd-ef12",
-      "img": "../../images/ziploc.png",
+      "img": "../../images/dividers.png",
       "price": "1.99"
     },
     {
       "name": "Freezer Bars",
       "sku": "3456-78ab",
-      "img": "../../images/ziploc.png",
+      "img": "../../images/flavor-ice.png",
       "price": "2.99"
     },
     {
       "name": "Post its",
       "sku": "cdef-1234",
-      "img": "../../images/ziploc.png",
+      "img": "../../images/post-it.png",
       "price": "0.99"
     }
 ]

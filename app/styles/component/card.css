@@ -10,7 +10,7 @@
 }
 
 .card-media {
-  background: url(http://placehold.it/150x150) center/contain no-repeat;
+  background: center no-repeat;
   padding-bottom: 100%;
 }
 
