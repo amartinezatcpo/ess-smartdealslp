@@ -1,7 +1,6 @@
 /* eslint multiline-ternary: ["warn", "always"], no-tabs: "warn"*/
 
 $(document).ready(function () {
-  var templateCard = '<li class="prod-grid__item"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{name}}</span></div><div class="item-sku"><span class="font_small uppercase">{{sku}}</span></div><div class="item-price"><span class="bold">{{price}}</span></div></div></a></div></li>';
 
 /**
  * Get data…
@@ -9,8 +8,7 @@ $(document).ready(function () {
 
   var xhr = new XMLHttpRequest(),
      method = 'GET',
-    //  url = 'data/prodJsonTest.json';
-     url = 'data/mock.json';
+     url = 'data/smartDeals_sample.json';
 
   xhr.open(method, url, true);
   xhr.onreadystatechange = function () {
@@ -18,43 +16,80 @@ $(document).ready(function () {
 
     if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
       xhrData = JSON.parse(xhr.responseText);
-      var a = renderTmp(xhrData, templateCard);
-      var b = addBgImg(a, xhrData);
-      var c = every5(b);
-      var d = insertTmp(c);
+      var a = dataOps(xhrData, ['Save on Craves', 'Sweet Deals']);
+      var b = insertTmp(a);
     }
   };
   xhr.send();
 
+  /**
+   * Data operations
+   */
 
-/**
- * templating
- */
+  // var models = [];
+
+  var dataOps = function(data, keys) {
+    var model = [],
+        filtered;
+
+    for (var i = 0; i < keys.length; i++) {
+      filtered = data.filter(function(elem) {
+                  return elem.category === keys[i];
+                });
+
+      model.push(filtered);
+    }
+
+    return renderSct(model);
+  }
+
+  /**
+   * templating
+   */
+
+  var templateCard = '<li class="prod-grid__item"<div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">{{price}}</span></div></div></a></div></li>';
+
+  var renderSct = function(model) {
+    var sections = [],
+        section;
+
+    for (var i = 0; i < model.length; i++) {
+      section = renderTmp(model[i], templateCard);
+
+      if (i === 1) {
+        every5(section);
+      }
+
+      sections.push(section);
+    }
+
+    return sections;
+  }
 
   var renderTmp = function(data, template) {
-    var output = [];
+    var output = [],
+        instance;
 
     data.forEach(function(val) {
      rendering = Mustache.render(template, val);
-     output.push($(rendering));
+     instance = addBgImg(rendering, val);
+     output.push(instance);
    })
 
    return output;
   }
 
-  var addBgImg = function(arr, data) {
-    arr.forEach(function($val, idx) {
-      $val
-        .find('.card-media')
-        .css('background-image', 'url(' + data[idx].img + ')');
-    })
+  var addBgImg = function(elem, data) {
+    var $elem = $(elem);
+    $elem
+      .find('.card-media')
+      .css('background-image', 'url(' + data.imgURL + ')');
 
-    return arr;
+    return $elem;
   }
 
   var every5 = function(arr) {
     for (var i = arr.length; i > 0; i--) {
-      console.log((i + ' % 5 = '), (i % 5), ((i !== 20) && (i % 5 === 0)));
       if ((i !== 20) && (i % 5 === 0)) {
         addHorRule(arr, i);
       }
@@ -67,6 +102,11 @@ $(document).ready(function () {
     return arr.splice(idx, 0, $('<hr class="prod-grid__rule">'))
   }
 
+
+  /**
+   * Dom manipulation
+   */
+
   var insertTmp = function(input) {
     var target = $('.list-wrapper');
     input.forEach(function(val, idx) {
@@ -76,9 +116,9 @@ $(document).ready(function () {
     return target;
   }
 
-/**
- * Swiper init & config
- */
+  /**
+   * Swiper init & config
+   */
 
   var mySwiper = new Swiper ('.swiper-container', {
    prevButton: '.swiper-button-prev',
