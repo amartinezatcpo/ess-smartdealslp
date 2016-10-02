@@ -1,14 +1,14 @@
 /* eslint multiline-ternary: ["warn", "always"], no-tabs: "warn"*/
 
-$(document).ready(function () {
+$(document).ready(function () { // TODO:50 refactor - move statements outside
 
 /**
  * Get data…
  */
 
-  var xhr = new XMLHttpRequest(),
+  var xhr = new XMLHttpRequest(), // TODO:0 change to $.ajax method
      method = 'GET',
-     url = 'data/smartDeals_sample.json';
+     url = 'data/smartDeals_sample.json'; // DONE:0 add more mock data & price
 
   xhr.open(method, url, true);
   xhr.onreadystatechange = function () {
@@ -18,6 +18,7 @@ $(document).ready(function () {
       xhrData = JSON.parse(xhr.responseText);
       var a = dataOps(xhrData, ['Save on Craves', 'Sweet Deals']);
       var b = insertTmp(a);
+      var mySwiper = new Swiper ('.swiper-container', swiperOpts);
     }
   };
   xhr.send();
@@ -26,9 +27,7 @@ $(document).ready(function () {
    * Data operations
    */
 
-  // var models = [];
-
-  var dataOps = function(data, keys) {
+  var dataOps = function(data, keys) { // TODO:10 change to be able to request amount dynamically
     var model = [],
         filtered;
 
@@ -47,14 +46,18 @@ $(document).ready(function () {
    * templating
    */
 
-  var templateCard = '<li class="prod-grid__item"<div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">{{price}}</span></div></div></a></div></li>';
+   // TODO:20 outsource
+  var templateSwpr = '<li class="swiper-slide"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">${{price}} /EA</span></div></div></a></div></li>';
+  var templateGrid = '<li class="prod-grid__item"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">${{price}} /EA</span></div></div></a></div></li>'
+
+  var templatesArr = [templateSwpr, templateGrid];
 
   var renderSct = function(model) {
     var sections = [],
         section;
 
     for (var i = 0; i < model.length; i++) {
-      section = renderTmp(model[i], templateCard);
+      section = renderTmp(model[i], templatesArr[i]);
 
       if (i === 1) {
         every5(section);
@@ -66,7 +69,8 @@ $(document).ready(function () {
     return sections;
   }
 
-  var renderTmp = function(data, template) {
+
+  var renderTmp = function(data, template) { // TODO:30 refactor
     var output = [],
         instance;
 
@@ -91,14 +95,14 @@ $(document).ready(function () {
   var every5 = function(arr) {
     for (var i = arr.length; i > 0; i--) {
       if ((i !== 20) && (i % 5 === 0)) {
-        addHorRule(arr, i);
+        addHorzRule(arr, i);
       }
     }
 
     return arr;
   }
 
-  var addHorRule = function(arr, idx) {
+  var addHorzRule = function(arr, idx) {
     return arr.splice(idx, 0, $('<hr class="prod-grid__rule">'))
   }
 
@@ -107,20 +111,26 @@ $(document).ready(function () {
    * Dom manipulation
    */
 
-  var insertTmp = function(input) {
-    var target = $('.list-wrapper');
-    input.forEach(function(val, idx) {
-      $(val).appendTo(target);
-    })
+  var insertTmp = function(input) { // TODO:40 refactor
+    var targets = [
+      $('.swiper-wrapper'),
+      $('.list-wrapper')
+    ];
 
-    return target;
+    for (var i = 0; i < targets.length; i++) {
+      input[i].forEach(function(val) {
+        val.appendTo(targets[i]);
+      })
+    }
+
+    return targets;
   }
 
   /**
    * Swiper init & config
    */
 
-  var mySwiper = new Swiper ('.swiper-container', {
+  var swiperOpts = {
    prevButton: '.swiper-button-prev',
    nextButton: '.swiper-button-next',
    slidesPerView: 4,
@@ -136,8 +146,7 @@ $(document).ready(function () {
        slidesPerGroup: 2
      }
    }
-  })
-
+  }
 
   /**
    * Event Listeners
