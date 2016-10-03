@@ -16,11 +16,14 @@
 
 [class^='prod-ctrl__'] {
   display: inline-block;
+  max-width: 50%;
 }
 
+.prod-ctrl__sort,
 .prod-ctrl__count {
   position: absolute;
   right: 0;
+  text-align: right;
 }
 
 .prod-grid {
