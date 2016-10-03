@@ -35,12 +35,12 @@ var cfg = {
     ]
   },
   domTrg: [
-    '.swiper-wrapper',
-    '.list-wrapper'
+    ['.swiper-wrapper'],
+    ['.list-wrapper']
   ],
   tmps: [
-    templateSwpr,
-    templateGrid
+    [templateSwpr],
+    [templateGrid]
   ]
 }
 
@@ -76,13 +76,13 @@ var dataOps = function(data, keys, iterator, selectors) {
 * templating
 *************************************************************/
 
-var renderSct = function(model) {
+var renderSct = function(model, tmps) {
   var sections = [],
       section;
 
   for (var i = 0; i < model.length; i++) {
 
-    section = renderTmp(model[i], cfg.tmps[i]);
+    section = renderTmp(model[i], tmps[i]);
 
     if (i === 1) {
       every5(section);
@@ -101,7 +101,7 @@ var renderTmp = function(data, template) { // TODO:10 refactor
       $instance;
 
   data[data.key].forEach(function(val) {
-   rendering = Mustache.render(template, val);
+   rendering = Mustache.render($.isArray(template) ? template[0] : template, val);
    $instance = addBgImg(rendering, val);
    $arr.push($instance);
  })
@@ -140,12 +140,12 @@ var addHorzRule = function(arr, idx) {
 /** ******************************************************************
  * Dom manipulation
  *******************************************************************/
+ var initTrg = [
+   $(cfg.domTrg[0]),
+   $(cfg.domTrg[1])
+ ];
 
-var insertTmp = function(input) { // TODO:20 refactor
-  var targets = [
-    $(cfg.domTrg[0]),
-    $(cfg.domTrg[1])
-  ];
+var insertTmp = function(input, targets) { // TODO:20 refactor
 
   for (var i = 0; i < targets.length; i++) {
     input[i][input[i]['key']].forEach(function(val) {
@@ -159,7 +159,19 @@ var insertTmp = function(input) { // TODO:20 refactor
 /** *****************************************************************
  * Event Listeners
  ******************************************************************/
+var registerEvents = function() {
 
+  $('.view-more').on('click', function(event) {
+    var clicked = this;
+    console.log(clicked);
+    $.get(cfg.ajx.url, function(data, clicked) {
+      var models = dataOps(data, cfg.ajx.prodCtg, 45, cfg.domTrg);
+      var tmps = renderSct(models, cfg.tmps[1]);
+      var domeEls = insertTmp(tmps, cfg.domTrg[1]);
+    }, 'json')
+  })
+
+}
 
 /** *****************************************************************
  * init
@@ -167,8 +179,8 @@ var insertTmp = function(input) { // TODO:20 refactor
 
 var init = function(data) {
   var models = dataOps(data, cfg.ajx.prodCtg, 45, cfg.domTrg);
-  var tmps = renderSct(models);
-  var domEls = insertTmp(tmps);
+  var tmps = renderSct(models, cfg.tmps);
+  var domEls = insertTmp(tmps, initTrg);
 }
 
 
@@ -177,23 +189,5 @@ $(document).ready(function () {
     init(data);
     return mySwiper = new Swiper('.swiper-container', cfg.swiper);
   }, 'json')
-
-  // Default dropdown action to show/hide dropdown content
-  $('.js-dropp-action').click(function(e) {
-    e.preventDefault();
-    $(this).toggleClass('js-open');
-    $(this).parent().next('.dropp-body').toggleClass('js-open');
-  });
-
-  // Using as fake input select dropdown
-  $('label').click(function() {
-    $(this).addClass('js-open').siblings().removeClass('js-open');
-    $('.dropp-body,.js-dropp-action').removeClass('js-open');
-  });
-
-  // get the value of checked input radio and display as dropp title
-  $('input[name="dropp"]').change(function() {
-    var value = $('input[name=\'dropp\']:checked').val();
-    $('.js-value').text(value);
-  });
+  registerEvents();
 })
