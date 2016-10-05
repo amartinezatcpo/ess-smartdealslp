@@ -35,12 +35,12 @@ var cfg = {
     ]
   },
   domTrg: [
-    ['.swiper-wrapper'],
-    ['.list-wrapper']
+    '.swiper-wrapper',
+    '.list-wrapper'
   ],
   tmps: [
-    [templateSwpr],
-    [templateGrid]
+    templateSwpr,
+    templateGrid
   ]
 }
 
@@ -51,26 +51,29 @@ var cfg = {
 // DOING:0 change to be able to request amount dynamically
 
 var dataOps = function(data, keys, iterator, selectors) {
-  var model = [],
-      filtered = [],
-      chunk = data.slice(1, iterator);
+  var chunk = data.slice(1, iterator);
 
-  for (var i = 0; i < keys.length; i++) {
-    var str = keys[i];
-    var slctr = selectors[i];
-    var obj = {}
-    obj.key = keys[i];
-    obj.selector = selectors[i];
-    obj[str] = chunk.filter(function(elem) {
-                 return elem.category === keys[i]
-               });
-    filtered.push(obj);
-
-    model.push(obj);
+  var filterDATA = function(key) {
+     return chunk.filter(function(elem) {
+       return elem.category === key;
+     })
   }
 
-  return model;
+  var iterator = function(keys) {
+    var models = []
+    if (typeof keys === 'string') {
+      models.push(filterDATA(keys));
+    } else {
+      for (var i = 0; i < keys.length; i++) {
+        models.push(filterDATA(keys[i]));
+      }
+    }
+    return models;
+  }
+
+  return iterator(keys);
 }
+
 
 /** ***********************************************************
 * templating
@@ -82,7 +85,7 @@ var renderSct = function(model, tmps) {
 
   for (var i = 0; i < model.length; i++) {
 
-    section = renderTmp(model[i], tmps[i]);
+    section = renderTmp(model[i], (typeof tmps === 'string' ? tmps : tmps[i]));
 
     if (i === 1) {
       every5(section);
@@ -100,7 +103,7 @@ var renderTmp = function(data, template) { // TODO:10 refactor
       $arr = [],
       $instance;
 
-  data[data.key].forEach(function(val) {
+  data.forEach(function(val) {
    rendering = Mustache.render($.isArray(template) ? template[0] : template, val);
    $instance = addBgImg(rendering, val);
    $arr.push($instance);
@@ -123,8 +126,8 @@ var addBgImg = function(elem, data) {
 }
 
 var every5 = function(arr) {
-  for (var i = arr['key'].length; i > 0; i--) {
-    if ((i !== arr['key'].length) && (i % 5 === 0)) {
+  for (var i = arr.length; i > 0; i--) {
+    if ((i !== arr.length) && (i % 5 === 0)) {
       addHorzRule(arr, i);
     }
   }
@@ -149,7 +152,7 @@ var insertTmp = function(input, targets) { // TODO:20 refactor
 
   for (var i = 0; i < targets.length; i++) {
     input[i][input[i]['key']].forEach(function(val) {
-      val.appendTo(targets[i]);
+      val.appendTo(typeof targets === 'string' ? targets : targets[i]);
     })
   }
 
@@ -165,7 +168,7 @@ var registerEvents = function() {
     var clicked = this;
     console.log(clicked);
     $.get(cfg.ajx.url, function(data, clicked) {
-      var models = dataOps(data, cfg.ajx.prodCtg, 45, cfg.domTrg);
+      var models = dataOps(data, cfg.ajx.prodCtg[1], 45, cfg.domTrg[1]);
       var tmps = renderSct(models, cfg.tmps[1]);
       var domeEls = insertTmp(tmps, cfg.domTrg[1]);
     }, 'json')
