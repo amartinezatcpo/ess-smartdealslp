@@ -5,10 +5,13 @@
  ***********************************************************/
 
  var swiperOpts = {
+   grabCursor: true,
    prevButton: '.swiper-button-prev',
    nextButton: '.swiper-button-next',
    slidesPerView: 4,
    slidesPerGroup: 4,
+  //  slidesOffsetBefore: 48,
+  //  slidesOffsetAfter: 48,
    spaceBetween: 24,
    breakpoints: {
     480: {
@@ -47,8 +50,6 @@ var cfg = {
 /** ***********************************************************
  * Data operations
  *************************************************************/
-
-// DOING:0 change to be able to request amount dynamically
 
 var dataOps = function(data, categories, limiter, selectors) {
   var chunk = data.slice(1, limiter);
@@ -95,7 +96,7 @@ var renderSct = function(model, tmps) {
 }
 
 
-var renderTmp = function(data, template) { // TODO:10 refactor
+var renderTmp = function(data, template) {
   var $output = [],
       $member;
 
@@ -123,7 +124,6 @@ var every5 = function(arr) {
       addHorzRule(arr, i);
     }
   }
-  // [].unshift(addHorzRule(arr, 0));
 
   return arr;
 }
@@ -142,10 +142,10 @@ var initTrg = [
   $(cfg.domTrg[1])
 ];
 
-var insertTmp = function(input, targets) { // TODO:20 refactor
+var insertTmp = function(input, targets) {
 
   for (var i = 0; i < targets.length; i++) {
-    input[i].forEach(function(val) {
+    input[i].forEach(function(val) { // TODO:20 runtime error
       val.appendTo(typeof targets === 'string' ? targets : targets[i]);
     })
   }
@@ -160,7 +160,7 @@ var registerEvents = function() {
 
   $('.view-more').on('click', function(event) {
     $.get(cfg.ajx.url, function(data, clicked) {
-      var models = dataOps(data, cfg.ajx.prodCtg[1], 20, cfg.domTrg[1]);
+      var models = dataOps(data, cfg.ajx.prodCtg[1], 45, cfg.domTrg[0]);
       var tmps = renderSct(models, cfg.tmps[1]);
       var domeEls = insertTmp(tmps, cfg.domTrg[1]);
     }, 'json')
