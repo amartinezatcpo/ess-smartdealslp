@@ -30,9 +30,15 @@
   text-align: center;
 }
 
+.list-wrapper hr:first-child,
+.list-wrapper hr:last-child {
+  display: none;
+}
+
 .prod-grid__item {
   display: inline-block;
   width: 50%;
+  vertical-align: top;
 }
 
 .prod-grid__rule {

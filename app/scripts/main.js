@@ -61,7 +61,7 @@ var dataOps = function(data, categories, limiter, selectors) {
 
   var iterator = function(keys) {
     var models = []
-    for (var i = 0; i < keys.length; i++) {
+    for (var i = 0; i < (typeof keys === 'string' ? 1 : keys.length); i++) {
       models.push(filterDATA(typeof keys === 'string' ? keys : keys[i]));
     }
 
@@ -84,7 +84,7 @@ var renderSct = function(model, tmps) {
 
     section = renderTmp(model[i], typeof tmps === 'string' ? tmps : tmps[i]);
 
-    if (i === 1) {
+    if (section[0].attr('class') === 'prod-grid__item') {
       every5(section);
     }
 
@@ -105,8 +105,6 @@ var renderTmp = function(data, template) { // TODO:10 refactor
    $output.push($member);
  })
 
- // output[data.key] = $arr;
-
  return $output;
 }
 
@@ -121,10 +119,11 @@ var addBgImg = function(elem, data) {
 
 var every5 = function(arr) {
   for (var i = arr.length; i > 0; i--) {
-    if (i !== arr.length && i % 5 === 0) {
+    if (i % 5 === 0) {
       addHorzRule(arr, i);
     }
   }
+  // [].unshift(addHorzRule(arr, 0));
 
   return arr;
 }
@@ -137,10 +136,11 @@ var addHorzRule = function(arr, idx) {
 /** ******************************************************************
  * Dom manipulation
  *******************************************************************/
- var initTrg = [
-   $(cfg.domTrg[0]),
-   $(cfg.domTrg[1])
- ];
+
+var initTrg = [
+  $(cfg.domTrg[0]),
+  $(cfg.domTrg[1])
+];
 
 var insertTmp = function(input, targets) { // TODO:20 refactor
 
@@ -159,10 +159,8 @@ var insertTmp = function(input, targets) { // TODO:20 refactor
 var registerEvents = function() {
 
   $('.view-more').on('click', function(event) {
-    var clicked = this;
-    console.log(clicked);
     $.get(cfg.ajx.url, function(data, clicked) {
-      var models = dataOps(data, cfg.ajx.prodCtg[1], 45, cfg.domTrg[1]);
+      var models = dataOps(data, cfg.ajx.prodCtg[1], 20, cfg.domTrg[1]);
       var tmps = renderSct(models, cfg.tmps[1]);
       var domeEls = insertTmp(tmps, cfg.domTrg[1]);
     }, 'json')
