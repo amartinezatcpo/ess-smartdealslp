@@ -1,4 +1,4 @@
-/* eslint multiline-ternary: ["warn", "always"], no-multiple-empty-lines: "off", no-implicit-globals: 0, no-tabs: "warn"*/
+/* eslint no-loop-func: 0, dot-location: 0, no-warning-comments: 0, no-inline-comments: 0, no-ternary: 0, no-plusplus: 0, id-length: 0, multiline-ternary: ["warn", "never"], no-multiple-empty-lines: "off", no-implicit-globals: 0, no-tabs: "warn"*/
 
 /** **********************************************************
  * Configs
@@ -22,8 +22,8 @@
    }
  }
 
- var templateSwpr = '<li class="swiper-slide"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">${{price}} /EA</span></div></div></a></div></li>';
- var templateGrid = '<li class="prod-grid__item"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">${{price}} /EA</span></div></div></a></div></li>';
+var templateSwpr = '<li class="swiper-slide"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">${{price}} /EA</span></div></div></a></div></li>';
+var templateGrid = '<li class="prod-grid__item"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">${{price}} /EA</span></div></div></a></div></li>';
 
 var cfg = {
   swiper: swiperOpts,
@@ -50,8 +50,8 @@ var cfg = {
 
 // DOING:0 change to be able to request amount dynamically
 
-var dataOps = function(data, keys, iterator, selectors) {
-  var chunk = data.slice(1, iterator);
+var dataOps = function(data, categories, limiter, selectors) {
+  var chunk = data.slice(1, limiter);
 
   var filterDATA = function(key) {
      return chunk.filter(function(elem) {
@@ -61,17 +61,14 @@ var dataOps = function(data, keys, iterator, selectors) {
 
   var iterator = function(keys) {
     var models = []
-    if (typeof keys === 'string') {
-      models.push(filterDATA(keys));
-    } else {
-      for (var i = 0; i < keys.length; i++) {
-        models.push(filterDATA(keys[i]));
-      }
+    for (var i = 0; i < keys.length; i++) {
+      models.push(filterDATA(typeof keys === 'string' ? keys : keys[i]));
     }
+
     return models;
   }
 
-  return iterator(keys);
+  return iterator(categories);
 }
 
 
@@ -85,7 +82,7 @@ var renderSct = function(model, tmps) {
 
   for (var i = 0; i < model.length; i++) {
 
-    section = renderTmp(model[i], (typeof tmps === 'string' ? tmps : tmps[i]));
+    section = renderTmp(model[i], typeof tmps === 'string' ? tmps : tmps[i]);
 
     if (i === 1) {
       every5(section);
@@ -99,21 +96,18 @@ var renderSct = function(model, tmps) {
 
 
 var renderTmp = function(data, template) { // TODO:10 refactor
-  var output = {},
-      $arr = [],
-      $instance;
+  var $output = [],
+      $member;
 
   data.forEach(function(val) {
    rendering = Mustache.render($.isArray(template) ? template[0] : template, val);
-   $instance = addBgImg(rendering, val);
-   $arr.push($instance);
+   $member = addBgImg(rendering, val);
+   $output.push($member);
  })
 
- output[data['key']] = $arr;
- output.key = data.key;
- output.selector = data.selector;
+ // output[data.key] = $arr;
 
- return output;
+ return $output;
 }
 
 var addBgImg = function(elem, data) {
@@ -127,7 +121,7 @@ var addBgImg = function(elem, data) {
 
 var every5 = function(arr) {
   for (var i = arr.length; i > 0; i--) {
-    if ((i !== arr.length) && (i % 5 === 0)) {
+    if (i !== arr.length && i % 5 === 0) {
       addHorzRule(arr, i);
     }
   }
@@ -136,7 +130,7 @@ var every5 = function(arr) {
 }
 
 var addHorzRule = function(arr, idx) {
-  return arr[arr.key].splice(idx, 0, $('<hr class="prod-grid__rule">'))
+  return arr.splice(idx, 0, $('<hr class="prod-grid__rule">'))
 }
 
 
@@ -151,7 +145,7 @@ var addHorzRule = function(arr, idx) {
 var insertTmp = function(input, targets) { // TODO:20 refactor
 
   for (var i = 0; i < targets.length; i++) {
-    input[i][input[i]['key']].forEach(function(val) {
+    input[i].forEach(function(val) {
       val.appendTo(typeof targets === 'string' ? targets : targets[i]);
     })
   }
