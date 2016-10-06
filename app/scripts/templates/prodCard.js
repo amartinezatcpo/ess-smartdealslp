@@ -19,7 +19,7 @@ var tmpSwpr = '<li class="swiper-slide">'
             +   '</div>'
             + '</li>'
 
-var tmpGrid = '<li class="prod-grid__item {{brand}}">'
+var tmpGrid = '<li class="prod-grid__item"  data-brand="{{brand}}">'
             +   '<div class="card">'
             +     '<a class="card-link" href="#">'
             +       '<div class="card-media"></div>'

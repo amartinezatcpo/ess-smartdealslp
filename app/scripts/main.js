@@ -26,7 +26,7 @@
  }
 
 var templateSwpr = '<li class="swiper-slide"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">${{price}} /EA</span></div></div></a></div></li>';
-var templateGrid = '<li class="prod-grid__item"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">${{price}} /EA</span></div></div></a></div></li>';
+var templateGrid = '<li class="prod-grid__item" data-brand="{{brand}}"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">${{price}} /EA</span></div></div></a></div></li>';
 
 var cfg = {
   swiper: swiperOpts,
@@ -160,7 +160,6 @@ var insertTmp = function(input, targets) {
 var findGreatest = function(items) {
  var prev = $(items[0]).height();
  for (var i = 0; i < items.length; i++) {
-   console.log($(items[i]).height())
    var height = $(items[i]).height();
    if (height > prev) {
      prev = height
@@ -185,6 +184,7 @@ var offsetHr = function($selector) {
 /** *****************************************************************
  * Event Listeners
  ******************************************************************/
+
 var registerEvents = function() {
 
   $('.view-more').on('click', function(event) {
@@ -192,8 +192,6 @@ var registerEvents = function() {
       var models = dataOps(data, cfg.ajx.prodCtg[1], 45, cfg.domTrg[0]);
       var tmps = renderSct(models, cfg.tmps[1]);
       var htmlEls = [];
-      // var horzRules = $('.prod-grid__rule');
-      // var prodItems = $('.prod-grid__item');
       for (var i = 0; i < tmps[0].length; i++) {
         htmlEls.push(tmps[0][i][0]);
       }
@@ -205,6 +203,18 @@ var registerEvents = function() {
     }, 'json')
   })
 
+  $('.filter-select').on('change', function() {
+    console.log(this.value);
+    var selectBy = this.value;
+    gridIso.isotope({
+      filter() {
+        console.log(this);
+        console.log($(this).data());
+        console.log($(this).data().brand);
+        return $(this).data().brand === 'folgers';
+      }
+    })
+  })
 }
 
 /** *****************************************************************
