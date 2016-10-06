@@ -154,10 +154,33 @@ var insertTmp = function(input, targets) {
 }
 
 /**
- * Isotope
+ * offset horizontal rules
  */
 
+var findGreatest = function(items) {
+ var prev = $(items[0]).height();
+ for (var i = 0; i < items.length; i++) {
+   console.log($(items[i]).height())
+   var height = $(items[i]).height();
+   if (height > prev) {
+     prev = height
+   }
+ }
+ return prev;
+}
 
+var offsetHr = function($selector) {
+  var items = $selector;
+  var rules = $('.prod-grid__rule');
+  var offsetTop = $(items[0]).offset().top;
+  var offsetBy = findGreatest(items);
+
+  for (var i = 0; i < rules.length; i++) {
+    $(rules[i]).offset({top: offsetTop + offsetBy + 48});
+    offsetTop = offsetTop + offsetBy + 48;
+  }
+
+}
 
 /** *****************************************************************
  * Event Listeners
@@ -168,12 +191,16 @@ var registerEvents = function() {
     $.get(cfg.ajx.url, function(data, clicked) {
       var models = dataOps(data, cfg.ajx.prodCtg[1], 45, cfg.domTrg[0]);
       var tmps = renderSct(models, cfg.tmps[1]);
-      var htmlEls = []
+      var htmlEls = [];
+      // var horzRules = $('.prod-grid__rule');
+      // var prodItems = $('.prod-grid__item');
       for (var i = 0; i < tmps[0].length; i++) {
         htmlEls.push(tmps[0][i][0]);
       }
       $('.list-wrapper').imagesLoaded({background: '.card-media'}, function(imgLoad) {
-        gridIso.append(htmlEls).isotope('appended', htmlEls);
+        gridIso.append(htmlEls)
+          .isotope('appended', htmlEls);
+        offsetHr($('.prod-grid__item'));
       })
     }, 'json')
   })
@@ -191,21 +218,11 @@ var init = function(data) {
   var tmps = renderSct(models, cfg.tmps);
   var domEls = insertTmp(tmps, initTrg);
   $('.list-wrapper').imagesLoaded({background: '.card-media'}, function(imgLoad) {
-    console.log(imgLoad.images.length);
     gridIso = $('.list-wrapper').isotope({
       itemSelector: '.prod-grid__item',
       layoutMode: 'fitRows'
     })
-    var rules = $('.prod-grid__rule');
-    var items = $('.prod-grid__item');
-    for (var i = 0; i < items.length; i++) {
-      if (i % 5 === 0) {
-        var offset = $(items[i]).offset().top;
-        var height = $(items[i]).height();
-        console.log(i, i / 5, $(rules[i / 5]), $(items[i]).offset());
-        $(rules[i / 5]).offset({top: offset + height + 48 + 32});
-      }
-    }
+    offsetHr($('.prod-grid__item'));
   })
 }
 
