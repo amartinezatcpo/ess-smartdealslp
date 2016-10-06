@@ -144,8 +144,8 @@ var initTrg = [
 
 var insertTmp = function(input, targets) {
 
-  for (var i = 0; i < targets.length; i++) {
-    input[i].forEach(function(val) { // TODO:20 runtime error
+  for (var i = 0; i < ((typeof targets === 'string') ? 1 : targets.length); i++) {
+    input[i].forEach(function(val) {
       val.appendTo(typeof targets === 'string' ? targets : targets[i]);
     })
   }
@@ -168,7 +168,13 @@ var registerEvents = function() {
     $.get(cfg.ajx.url, function(data, clicked) {
       var models = dataOps(data, cfg.ajx.prodCtg[1], 45, cfg.domTrg[0]);
       var tmps = renderSct(models, cfg.tmps[1]);
-      var domeEls = insertTmp(tmps, cfg.domTrg[1]);
+      var htmlEls = []
+      for (var i = 0; i < tmps[0].length; i++) {
+        htmlEls.push(tmps[0][i][0]);
+      }
+      $('.list-wrapper').imagesLoaded({background: '.card-media'}, function(imgLoad) {
+        gridIso.append(htmlEls).isotope('appended', htmlEls);
+      })
     }, 'json')
   })
 
@@ -178,13 +184,15 @@ var registerEvents = function() {
  * init
  ******************************************************************/
 
+var gridIso = null;
+
 var init = function(data) {
   var models = dataOps(data, cfg.ajx.prodCtg, 45, cfg.domTrg);
   var tmps = renderSct(models, cfg.tmps);
   var domEls = insertTmp(tmps, initTrg);
   $('.list-wrapper').imagesLoaded({background: '.card-media'}, function(imgLoad) {
     console.log(imgLoad.images.length);
-    $('.list-wrapper').isotope({
+    gridIso = $('.list-wrapper').isotope({
       itemSelector: '.prod-grid__item',
       layoutMode: 'fitRows'
     })
