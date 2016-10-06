@@ -63,7 +63,7 @@
 
       </div>
 
-      <div class="container-fixed">
+      <div class="container-fixed full-height">
 
         <div class="prod-header">
           <span class="prod-header__main h2 uppercase font-blue">January Buys</span>
@@ -73,36 +73,27 @@
         <div class="prod-ctrl">
 
           <div class="prod-ctrl__filt">
-
-              <!-- TODO: style inputs -->
-              <div class="styled-select">
-                <label class="font_small" for="select">Filter by:</label>
-                <select id="select">
-                  <option>Category</option>
-                  <option>The second option</option>
-                  <option>The third option</option>
-                </select>
-              </div>
-
+            <div class="styled-select">
+              <label class="font_small" for="select">Filter by:</label>
+              <select class="filter-select">
+                <option value="*">Show All</option>
+                <option value=".folgers">Folgers</option>
+                <option value=".starbucks">Starbucks</option>
+                <option value=".other">Other</option>
+              </select>
+            </div>
           </div>
 
           <div class="prod-ctrl__sort">
             <div class="styled-select">
               <label class="font_small" for="select">Sort by:</label>
-              <select id="select">
+              <select class="sort-select">
                 <option>Relevance</option>
                 <option>The second option</option>
                 <option>The third option</option>
               </select>
             </div>
           </div>
-
-          <!-- <div class="prod-ctrl__count">
-            <span>View</span>
-            <span>30 |</span>
-            <span>60 |</span>
-            <span>90</span>
-          </div> -->
 
         </div>
 
@@ -129,6 +120,8 @@
     <!-- endbuild -->
 
     <!-- build:js scripts/main.js -->
+    <script src="https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.js"></script>
+    <script src="scripts/lib/isotope.pkgd.js"></script>
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
 

@@ -153,6 +153,12 @@ var insertTmp = function(input, targets) {
   return targets;
 }
 
+/**
+ * Isotope
+ */
+
+
+
 /** *****************************************************************
  * Event Listeners
  ******************************************************************/
@@ -176,6 +182,23 @@ var init = function(data) {
   var models = dataOps(data, cfg.ajx.prodCtg, 45, cfg.domTrg);
   var tmps = renderSct(models, cfg.tmps);
   var domEls = insertTmp(tmps, initTrg);
+  $('.list-wrapper').imagesLoaded({background: '.card-media'}, function(imgLoad) {
+    console.log(imgLoad.images.length);
+    $('.list-wrapper').isotope({
+      itemSelector: '.prod-grid__item',
+      layoutMode: 'fitRows'
+    })
+    var rules = $('.prod-grid__rule');
+    var items = $('.prod-grid__item');
+    for (var i = 0; i < items.length; i++) {
+      if (i % 5 === 0) {
+        var offset = $(items[i]).offset().top;
+        var height = $(items[i]).height();
+        console.log(i, i / 5, $(rules[i / 5]), $(items[i]).offset());
+        $(rules[i / 5]).offset({top: offset + height + 48 + 32});
+      }
+    }
+  })
 }
 
 
