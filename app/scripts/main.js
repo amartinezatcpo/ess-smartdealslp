@@ -178,7 +178,6 @@ var offsetHr = function($selector) {
     $(rules[i]).offset({top: offsetTop + offsetBy + 48});
     offsetTop = offsetTop + offsetBy + 48;
   }
-
 }
 
 /** *****************************************************************
@@ -208,17 +207,22 @@ var registerEvents = function() {
     var selectBy = this.value;
     gridIso.isotope({
       filter() {
-        console.log(this);
-        console.log($(this).data());
-        console.log($(this).data().brand);
         return $(this).data().brand === 'folgers';
       }
     })
   })
+
+  $(window).resize(function() {
+    console.log('resized@@@!');
+    var rules = $('.prod-grid__rule')
+    rules.css('opacity', 0);
+    offsetHr($('.prod-grid__item'));
+    setTimeout(rules.css('opacity', 1), 1000);
+  })
 }
 
 /** *****************************************************************
- * init
+ * setup
  ******************************************************************/
 
 var gridIso = null;
@@ -236,6 +240,9 @@ var init = function(data) {
   })
 }
 
+/** *****************************************************************
+ * init
+ ******************************************************************/
 
 $(document).ready(function () {
   $.get(cfg.ajx.url, function(data) {

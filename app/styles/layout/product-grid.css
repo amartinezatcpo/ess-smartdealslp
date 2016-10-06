@@ -10,7 +10,7 @@
 .prod-ctrl {
   position: relative;
   padding: 16px 0;
-  border: 1px solid rgba(0,0,0,0.2);
+  border: 1px solid rgba(0,0,0,0.1);
   border-left: 0; border-right: 0;
 }
 
@@ -53,5 +53,7 @@
 
   .prod-grid__rule {
     display: block;
+    border: 0.25px solid rgba(0,0,0,0.1);
+    transition: opacity 1s ease-out;
   }
 }
