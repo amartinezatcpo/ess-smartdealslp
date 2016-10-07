@@ -87,9 +87,9 @@ var renderSct = function(model, tmps) {
 
     section = renderTmp(model[i], typeof tmps === 'string' ? tmps : tmps[i]);
 
-    if (section[0].attr('class') === 'prod-grid__item') {
-      every5(section);
-    }
+    // if (section[0].attr('class') === 'prod-grid__item') {
+    //   every5(section);
+    // }
 
     sections.push(section);
   }
@@ -120,19 +120,19 @@ var addBgImg = function(elem, data) {
   return $elem;
 }
 
-var every5 = function(arr) {
-  for (var i = arr.length; i > 0; i--) {
-    if (i % 5 === 0) {
-      addHorzRule(arr, i);
-    }
-  }
-
-  return arr;
-}
-
-var addHorzRule = function(arr, idx) {
-  return arr.splice(idx, 0, $('<hr class="prod-grid__rule">'))
-}
+// var every5 = function(arr) {
+//   for (var i = arr.length; i > 0; i--) {
+//     if (i % 5 === 0) {
+//       addHorzRule(arr, i);
+//     }
+//   }
+//
+//   return arr;
+// }
+//
+// var addHorzRule = function(arr, idx) {
+//   return arr.splice(idx, 0, $('<hr class="prod-grid__rule">'))
+// }
 
 
 /** ******************************************************************
@@ -174,20 +174,6 @@ var findGreatestPB = function(items) {
  return parseInt($(items[0]).css('padding-bottom'));
 }
 
-var offsetHr = function($selector) {
-  var items = $selector;
-  var rules = $('.prod-grid__rule');
-  var offsetTop = $(items[0]).offset().top;
-  var offsetBy = findGreatest(items);
-  if ($selector.length <= 1) {
-    items = $selector;
-  }
-  for (var i = 0; i < rules.length; i++) {
-    $(rules[i]).offset({top: offsetTop + offsetBy + 48});
-    offsetTop = offsetTop + offsetBy + 48;
-  }
-}
-
 var setSlideHeight = function($selector) {
   setTimeout(function() {
     var slides = $($selector);
@@ -224,13 +210,12 @@ var registerEvents = function() {
       $('.list-wrapper').imagesLoaded({background: '.card-media'}, function(imgLoad) {
         gridIso.append(htmlEls)
           .isotope('appended', htmlEls);
-        offsetHr($('.prod-grid__item'));
       })
     }, 'json')
   })
 
   $('.filter-select').on('change', function() {
-    console.log(this.value);
+    // Isotope filter
     var str = this.value;
     if (str === '*') {
       gridIso.isotope({
@@ -244,37 +229,7 @@ var registerEvents = function() {
         }
       })
     }
-    console.log($('.list-wrapper').children());
-    var dataTotals = 0;
-    var gridItems = $('.list-wrapper').children();
-    var firstGridItem = null;
-    for (var i = 0; i < gridItems.length; i++) {
-      if ($(gridItems[i]).data().brand === str) {
-        firstGridItem = firstGridItem || gridItems[i];
-        dataTotals++
-      }
-    }
-    var showNrules = 0;
-    for (var i = dataTotals; i > 0; i--) {
-      if (i % 5 === 0) {
-        showNrules++
-      }
-    }
-    offsetHr(firstGridItem);
-    var rules = $('.prod-grid__rule');
-    for (var i = 0; i < rules.length; i++) {
-      if (i >= showNrules) {
-        $(rules[i]).css('display', 'none');
-      }
-    }
   })
-
-  // gridIso.isotope({
-  //   getSortData: {
-  //     name: '.item-name',
-  //     price: '.item-price > span parseFloat',
-  //   }
-  // })
 
   $('.sort-select').on('change', function() {
     var sortByValue = this.value;
@@ -311,7 +266,6 @@ var init = function(data) {
         price: '.item-price > span parseFloat',
       }
     })
-    offsetHr($('.prod-grid__item'));
   })
   mySwiper = new Swiper('.swiper-container', cfg.swiper);
   setSlideHeight('.swiper-slide');
