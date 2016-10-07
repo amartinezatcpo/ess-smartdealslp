@@ -28,7 +28,7 @@
  }
 
 var templateSwpr = '<li class="swiper-slide"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">${{price}} /EA</span></div></div></a></div></li>';
-var templateGrid = '<li class="prod-grid__item" data-brand="{{brand}}"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">${{price}} /EA</span></div></div></a></div></li>';
+var templateGrid = '<li class="prod-grid__item" data-brand="{{brand}}" data-price="{{price}}"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">${{price}} /EA</span></div></div></a></div></li>';
 
 var cfg = {
   swiper: swiperOpts,
@@ -179,7 +179,9 @@ var offsetHr = function($selector) {
   var rules = $('.prod-grid__rule');
   var offsetTop = $(items[0]).offset().top;
   var offsetBy = findGreatest(items);
-
+  if ($selector.length <= 1) {
+    items = $selector;
+  }
   for (var i = 0; i < rules.length; i++) {
     $(rules[i]).offset({top: offsetTop + offsetBy + 48});
     offsetTop = offsetTop + offsetBy + 48;
@@ -199,8 +201,6 @@ var setSlideHeight = function($selector) {
     // var slidesHeight = findGreatest(slides);
     // var cardsHeight = findGreatest(cards);
     for (var i = 0; i < cards.length; i++) {
-      // $(cards[i]).css('height', cardsHeight);
-      // $(slides[i]).css('max-height', slidesHeight);
       $(cards[i]).height(tallest);
     }
   }, 100)
@@ -244,12 +244,46 @@ var registerEvents = function() {
         }
       })
     }
+    console.log($('.list-wrapper').children());
+    var dataTotals = 0;
+    var gridItems = $('.list-wrapper').children();
+    var firstGridItem = null;
+    for (var i = 0; i < gridItems.length; i++) {
+      if ($(gridItems[i]).data().brand === str) {
+        firstGridItem = firstGridItem || gridItems[i];
+        dataTotals++
+      }
+    }
+    var showNrules = 0;
+    for (var i = dataTotals; i > 0; i--) {
+      if (i % 5 === 0) {
+        showNrules++
+      }
+    }
+    offsetHr(firstGridItem);
+    var rules = $('.prod-grid__rule');
+    for (var i = 0; i < rules.length; i++) {
+      if (i >= showNrules) {
+        $(rules[i]).css('display', 'none');
+      }
+    }
+  })
+
+  // gridIso.isotope({
+  //   getSortData: {
+  //     name: '.item-name',
+  //     price: '.item-price > span parseFloat',
+  //   }
+  // })
+
+  $('.sort-select').on('change', function() {
+    var sortByValue = this.value;
+    gridIso.isotope({ sortBy: sortByValue });
   })
 
   $(window).resize(function() {
     var rules = $('.prod-grid__rule');
     var slides = $('.swiper-slide');
-    // setTimeout(setSlideHeight(slides), 100);
     setSlideHeight(slides);
     rules.css('opacity', 0);
     offsetHr($('.prod-grid__item'));
@@ -271,7 +305,11 @@ var init = function(data) {
   $('.list-wrapper').imagesLoaded({background: '.card-media'}, function(imgLoad) {
     gridIso = $('.list-wrapper').isotope({
       itemSelector: '.prod-grid__item',
-      layoutMode: 'fitRows'
+      layoutMode: 'fitRows',
+      getSortData: {
+        name: '.item-name',
+        price: '.item-price > span parseFloat',
+      }
     })
     offsetHr($('.prod-grid__item'));
   })

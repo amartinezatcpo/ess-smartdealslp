@@ -53,6 +53,7 @@
 
   .prod-grid__rule {
     display: block;
+    z-index: 10;
     border: 0.25px solid rgba(0,0,0,0.1);
     transition: opacity 1s ease-out;
   }
