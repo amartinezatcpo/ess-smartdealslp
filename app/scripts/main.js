@@ -203,7 +203,7 @@ var setSlideHeight = function($selector) {
       // $(slides[i]).css('max-height', slidesHeight);
       $(cards[i]).height(tallest);
     }
-  }, 500)
+  }, 100)
 }
 
 
