@@ -10,8 +10,6 @@
    nextButton: '.swiper-button-next',
    slidesPerView: 4,
    slidesPerGroup: 4,
-  //  slidesOffsetBefore: 48,
-  //  slidesOffsetAfter: 48,
    spaceBetween: 24,
    breakpoints: {
     480: {
@@ -21,6 +19,10 @@
     768: {
       slidesPerView: 2,
       slidesPerGroup: 2
+    },
+    1440: {
+      slidesPerView: 3,
+      slidesPerGroup: 3
     }
    }
  }
@@ -168,6 +170,10 @@ var findGreatest = function(items) {
  return prev;
 }
 
+var findGreatestPB = function(items) {
+ return parseInt($(items[0]).css('padding-bottom'));
+}
+
 var offsetHr = function($selector) {
   var items = $selector;
   var rules = $('.prod-grid__rule');
@@ -181,14 +187,23 @@ var offsetHr = function($selector) {
 }
 
 var setSlideHeight = function($selector) {
-  var slides = $($selector)
-  var slideHeight = findGreatest(slides);
-  console.log(slideHeight);
-  for (var i = 0; i < slides.length; i++) {
-    console.log($(slides[i]).height());
-    $(slides[i]).find('.card').height(slideHeight);
-    console.log($(slides[i]).height());
-  }
+  setTimeout(function() {
+    var slides = $($selector);
+    var cards = $(slides).find('.card');
+    var totalPadding = 32;
+    var cardMedia = $($selector).find('.card-media');
+    var cardInfo = $($selector).find('.item-info');
+    var cardMediaHt = findGreatestPB(cardMedia);
+    var cardInfoHt = findGreatest(cardInfo)
+    var tallest = +cardMediaHt + cardInfoHt + totalPadding;
+    // var slidesHeight = findGreatest(slides);
+    // var cardsHeight = findGreatest(cards);
+    for (var i = 0; i < cards.length; i++) {
+      // $(cards[i]).css('height', cardsHeight);
+      // $(slides[i]).css('max-height', slidesHeight);
+      $(cards[i]).height(tallest);
+    }
+  }, 500)
 }
 
 
@@ -225,15 +240,13 @@ var registerEvents = function() {
   })
 
   $(window).resize(function() {
-    console.log('resized@@@!');
-
-    var rules = $('.prod-grid__rule')
+    var rules = $('.prod-grid__rule');
+    var slides = $('.swiper-slide');
+    // setTimeout(setSlideHeight(slides), 100);
+    setSlideHeight(slides);
     rules.css('opacity', 0);
     offsetHr($('.prod-grid__item'));
     setTimeout(rules.css('opacity', 1), 1000);
-
-    var tallest = findGreatest($('.swiper-slide'));
-    $('.swiper-slide').height(tallest);
   })
 }
 
@@ -257,14 +270,6 @@ var init = function(data) {
   })
   mySwiper = new Swiper('.swiper-container', cfg.swiper);
   setSlideHeight('.swiper-slide');
-  // var slides = $('.swiper-slide')
-  // var slideHeight = findGreatest($('.swiper-slide'));
-  // console.log(slideHeight);
-  // for (var i = 0; i < slides.length; i++) {
-  //   console.log($(slides[i]).height());
-  //   $(slides[i]).height(slideHeight);
-  //   console.log($(slides[i]).height());
-  // }
 }
 
 /** *****************************************************************
