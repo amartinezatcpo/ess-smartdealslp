@@ -180,6 +180,18 @@ var offsetHr = function($selector) {
   }
 }
 
+var setSlideHeight = function($selector) {
+  var slides = $($selector)
+  var slideHeight = findGreatest(slides);
+  console.log(slideHeight);
+  for (var i = 0; i < slides.length; i++) {
+    console.log($(slides[i]).height());
+    $(slides[i]).find('.card').height(slideHeight);
+    console.log($(slides[i]).height());
+  }
+}
+
+
 /** *****************************************************************
  * Event Listeners
  ******************************************************************/
@@ -214,10 +226,14 @@ var registerEvents = function() {
 
   $(window).resize(function() {
     console.log('resized@@@!');
+
     var rules = $('.prod-grid__rule')
     rules.css('opacity', 0);
     offsetHr($('.prod-grid__item'));
     setTimeout(rules.css('opacity', 1), 1000);
+
+    var tallest = findGreatest($('.swiper-slide'));
+    $('.swiper-slide').height(tallest);
   })
 }
 
@@ -226,6 +242,7 @@ var registerEvents = function() {
  ******************************************************************/
 
 var gridIso = null;
+var mySwiper = null;
 
 var init = function(data) {
   var models = dataOps(data, cfg.ajx.prodCtg, 45, cfg.domTrg);
@@ -238,6 +255,16 @@ var init = function(data) {
     })
     offsetHr($('.prod-grid__item'));
   })
+  mySwiper = new Swiper('.swiper-container', cfg.swiper);
+  setSlideHeight('.swiper-slide');
+  // var slides = $('.swiper-slide')
+  // var slideHeight = findGreatest($('.swiper-slide'));
+  // console.log(slideHeight);
+  // for (var i = 0; i < slides.length; i++) {
+  //   console.log($(slides[i]).height());
+  //   $(slides[i]).height(slideHeight);
+  //   console.log($(slides[i]).height());
+  // }
 }
 
 /** *****************************************************************
@@ -247,7 +274,6 @@ var init = function(data) {
 $(document).ready(function () {
   $.get(cfg.ajx.url, function(data) {
     init(data);
-    return mySwiper = new Swiper('.swiper-container', cfg.swiper);
   }, 'json')
   registerEvents();
 })
