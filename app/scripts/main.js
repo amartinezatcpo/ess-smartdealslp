@@ -231,12 +231,19 @@ var registerEvents = function() {
 
   $('.filter-select').on('change', function() {
     console.log(this.value);
-    var selectBy = this.value;
-    gridIso.isotope({
-      filter() {
-        return $(this).data().brand === 'folgers';
-      }
-    })
+    var str = this.value;
+    if (str === '*') {
+      gridIso.isotope({
+        filter: str
+      })
+    } else {
+      var str = this.value.match(/\w+/)[0];
+      gridIso.isotope({
+        filter() {
+          return $(this).data().brand ===  str;
+        }
+      })
+    }
   })
 
   $(window).resize(function() {
