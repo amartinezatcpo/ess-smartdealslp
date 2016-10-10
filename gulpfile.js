@@ -47,13 +47,12 @@ gulp.task('html', ['styles', 'scripts'], () => {
   return gulp.src('app/*.html')
     .pipe($.plumber())
     .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
-    // .pipe($.if('*.js', $.uglify()*/))
+    .pipe($.if('*.js', $.uglify()))
     .pipe($.if('*.css', $.cssnano({safe: true, autoprefixer: false})))
     .pipe(gulp.dest('dist'));
 });
 
 gulp.task('data', function () {
-  console.log('path runs!!');
   return gulp.src('app/**/*.json')
     .pipe(gulp.dest('dist/'))
 });
