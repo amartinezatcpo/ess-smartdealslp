@@ -93,10 +93,6 @@ var renderSct = function(model, tmps) {
 
     section = renderTmp(model[i], typeof tmps === 'string' ? tmps : tmps[i]);
 
-    // if (section[0].attr('class') === 'prod-grid__item') {
-    //   every5(section);
-    // }
-
     sections.push(section);
   }
 
@@ -214,7 +210,7 @@ var registerEvents = function() {
     } else {
       var str = this.value.match(/\w+/)[0];
       gridIso.isotope({
-        filter() {
+        filter: function() {
           return j$(this).data().brand === str;
         }
       })
