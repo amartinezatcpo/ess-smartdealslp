@@ -4,6 +4,12 @@
  * Configs
  ***********************************************************/
 
+// jQuery no-conflict
+
+  var j$ = $.noConflict();
+
+// App configs
+
  var swiperOpts = {
    grabCursor: true,
    prevButton: '.swiper-button-prev',
@@ -27,8 +33,8 @@
    }
  }
 
-var templateSwpr = '<li class="swiper-slide"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">${{price}} /EA</span></div></div></a></div></li>';
-var templateGrid = '<li class="prod-grid__item" data-brand="{{brand}}" data-price="{{price}}"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">${{price}} /EA</span></div></div></a></div></li>';
+var templateSwpr = '<li class="swiper-slide"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">j${{price}} /EA</span></div></div></a></div></li>';
+var templateGrid = '<li class="prod-grid__item" data-brand="{{brand}}" data-price="{{price}}"><div class="card"><a class="card-link" href="#"><div class="card-media"></div><div class="item-info"><div class="item-name"><span class="bold">{{description}}</span></div><div class="item-sku"><span class="font_small uppercase">{{skuid}}</span></div><div class="item-price"><span class="bold">j${{price}} /EA</span></div></div></a></div></li>';
 
 var cfg = {
   swiper: swiperOpts,
@@ -87,10 +93,6 @@ var renderSct = function(model, tmps) {
 
     section = renderTmp(model[i], typeof tmps === 'string' ? tmps : tmps[i]);
 
-    // if (section[0].attr('class') === 'prod-grid__item') {
-    //   every5(section);
-    // }
-
     sections.push(section);
   }
 
@@ -99,40 +101,26 @@ var renderSct = function(model, tmps) {
 
 
 var renderTmp = function(data, template) {
-  var $output = [],
-      $member;
+  var j$output = [],
+      j$member;
 
   data.forEach(function(val) {
-   rendering = Mustache.render($.isArray(template) ? template[0] : template, val);
-   $member = addBgImg(rendering, val);
-   $output.push($member);
+   rendering = Mustache.render(j$.isArray(template) ? template[0] : template, val);
+   j$member = addBgImg(rendering, val);
+   j$output.push(j$member);
  })
 
- return $output;
+ return j$output;
 }
 
 var addBgImg = function(elem, data) {
-  var $elem = $(elem);
-  $elem
+  var j$elem = j$(elem);
+  j$elem
     .find('.card-media')
     .css('background-image', 'url(' + data.imgURL + ')');
 
-  return $elem;
+  return j$elem;
 }
-
-// var every5 = function(arr) {
-//   for (var i = arr.length; i > 0; i--) {
-//     if (i % 5 === 0) {
-//       addHorzRule(arr, i);
-//     }
-//   }
-//
-//   return arr;
-// }
-//
-// var addHorzRule = function(arr, idx) {
-//   return arr.splice(idx, 0, $('<hr class="prod-grid__rule">'))
-// }
 
 
 /** ******************************************************************
@@ -140,8 +128,8 @@ var addBgImg = function(elem, data) {
  *******************************************************************/
 
 var initTrg = [
-  $(cfg.domTrg[0]),
-  $(cfg.domTrg[1])
+  j$(cfg.domTrg[0]),
+  j$(cfg.domTrg[1])
 ];
 
 var insertTmp = function(input, targets) {
@@ -160,9 +148,9 @@ var insertTmp = function(input, targets) {
  */
 
 var findGreatest = function(items) {
- var prev = $(items[0]).height();
+ var prev = j$(items[0]).height();
  for (var i = 0; i < items.length; i++) {
-   var height = $(items[i]).height();
+   var height = j$(items[i]).height();
    if (height > prev) {
      prev = height
    }
@@ -171,23 +159,23 @@ var findGreatest = function(items) {
 }
 
 var findGreatestPB = function(items) {
- return parseInt($(items[0]).css('padding-bottom'));
+ return parseInt(j$(items[0]).css('padding-bottom'));
 }
 
-var setSlideHeight = function($selector) {
+var setSlideHeight = function(j$selector) {
   setTimeout(function() {
-    var slides = $($selector);
-    var cards = $(slides).find('.card');
+    var slides = j$(j$selector);
+    var cards = j$(slides).find('.card');
     var totalPadding = 32;
-    var cardMedia = $($selector).find('.card-media');
-    var cardInfo = $($selector).find('.item-info');
+    var cardMedia = j$(j$selector).find('.card-media');
+    var cardInfo = j$(j$selector).find('.item-info');
     var cardMediaHt = findGreatestPB(cardMedia);
     var cardInfoHt = findGreatest(cardInfo)
     var tallest = +cardMediaHt + cardInfoHt + totalPadding;
     // var slidesHeight = findGreatest(slides);
     // var cardsHeight = findGreatest(cards);
     for (var i = 0; i < cards.length; i++) {
-      $(cards[i]).height(tallest);
+      j$(cards[i]).height(tallest);
     }
   }, 100)
 }
@@ -199,49 +187,47 @@ var setSlideHeight = function($selector) {
 
 var registerEvents = function() {
 
-  $('.view-more').on('click', function(event) {
-    $.get(cfg.ajx.url, function(data, clicked) {
+  j$('.view-more').on('click', function(event) {
+    j$.get(cfg.ajx.url, function(data, clicked) {
       var models = dataOps(data, cfg.ajx.prodCtg[1], 45, cfg.domTrg[0]);
       var tmps = renderSct(models, cfg.tmps[1]);
       var htmlEls = [];
       for (var i = 0; i < tmps[0].length; i++) {
         htmlEls.push(tmps[0][i][0]);
       }
-      $('.list-wrapper').imagesLoaded({background: '.card-media'}, function(imgLoad) {
+      j$('.list-wrapper').imagesLoaded({background: '.card-media'}, function(imgLoad) {
         gridIso.append(htmlEls)
           .isotope('appended', htmlEls);
       })
     }, 'json')
   })
 
-  $('.filter-select').on('change', function() {
+  j$('.filter-select').on('change', function() {
     // Isotope filter
     var str = this.value;
     if (str === '*') {
-      gridIso.isotope({
-        filter: str
-      })
+      gridIso.isotope({filter: str})
     } else {
       var str = this.value.match(/\w+/)[0];
       gridIso.isotope({
-        filter() {
-          return $(this).data().brand ===  str;
+        filter: function() {
+          return j$(this).data().brand === str;
         }
       })
     }
   })
 
-  $('.sort-select').on('change', function() {
+  j$('.sort-select').on('change', function() {
     var sortByValue = this.value;
-    gridIso.isotope({ sortBy: sortByValue });
+    gridIso.isotope({sortBy: sortByValue});
   })
 
-  $(window).resize(function() {
-    var rules = $('.prod-grid__rule');
-    var slides = $('.swiper-slide');
+  j$(window).resize(function() {
+    var rules = j$('.prod-grid__rule');
+    var slides = j$('.swiper-slide');
     setSlideHeight(slides);
     rules.css('opacity', 0);
-    offsetHr($('.prod-grid__item'));
+    offsetHr(j$('.prod-grid__item'));
     setTimeout(rules.css('opacity', 1), 1000);
   })
 }
@@ -257,13 +243,13 @@ var init = function(data) {
   var models = dataOps(data, cfg.ajx.prodCtg, 45, cfg.domTrg);
   var tmps = renderSct(models, cfg.tmps);
   var domEls = insertTmp(tmps, initTrg);
-  $('.list-wrapper').imagesLoaded({background: '.card-media'}, function(imgLoad) {
-    gridIso = $('.list-wrapper').isotope({
+  j$('.list-wrapper').imagesLoaded({background: '.card-media'}, function(imgLoad) {
+    gridIso = j$('.list-wrapper').isotope({
       itemSelector: '.prod-grid__item',
       layoutMode: 'fitRows',
       getSortData: {
         name: '.item-name',
-        price: '.item-price > span parseFloat',
+        price: '.item-price > span parseFloat'
       }
     })
   })
@@ -275,8 +261,8 @@ var init = function(data) {
  * init
  ******************************************************************/
 
-$(document).ready(function () {
-  $.get(cfg.ajx.url, function(data) {
+j$(document).ready(function () {
+  j$.get(cfg.ajx.url, function(data) {
     init(data);
   }, 'json')
   registerEvents();

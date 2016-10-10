@@ -11,16 +11,9 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <!-- Place favicon.ico in the root directory -->
 
-    <!-- build:css styles/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="/bower_components/normalize-css/normalize.css" />
-    <link rel="stylesheet" href="/bower_components/Swiper/dist/css/swiper.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
+    <link rel="stylesheet" href="styles/vendor.css">
 
-    <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
 
   </head>
   <body id="ESS-SD-WidgetContainer">
@@ -41,7 +34,7 @@
 
         <div class="container-fixed">
 
-          <h2 class="h4 slider-section__heading">Great deals on these <span class="uppercase">best sellers</span></h2>
+          <h2 class="h4 slider-section__heading">Great deals on these <span class="uppercase font-blue">best sellers</span></h2>
 
           <!-- Slider main container -->
           <div class="swiper-container">
@@ -54,8 +47,8 @@
             </ul>
 
             <!-- navigation buttons -->
-            <!-- <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div> -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
 
           </div>
 
@@ -63,35 +56,37 @@
 
       </div>
 
-      <div class="container-fixed">
+      <div class="container-fixed full-height">
 
         <div class="prod-header">
-          <span class="prod-header__main h2">January Buys</span>
+          <span class="prod-header__main h2 uppercase font-blue">January Buys</span>
           <small class="prod-header__sub ">{123 Products}</small>
         </div>
 
         <div class="prod-ctrl">
 
           <div class="prod-ctrl__filt">
-            <label class="font_small" for="prod-ctrls__filt-sel">Filter by:</label>
-            <select id="prod-ctrl__filt-sel">
-              <option value="category">Category</option>
-            </select>
+            <div class="styled-select">
+              <label class="font_small" for="select">Filter by:</label>
+              <select class="filter-select">
+                <option value="*">Show All</option>
+                <option value=".folgers">Folgers</option>
+                <option value=".starbucks">Starbucks</option>
+                <option value=".other">Other</option>
+              </select>
+            </div>
           </div>
 
           <div class="prod-ctrl__sort">
-            <label class="font_small" for="prod-ctrl__sort">Sort by:</label>
-            <select id="prod-ctrl__sort">
-              <option value="relevance">Relevance</option>
-            </select>
+            <div class="styled-select">
+              <label class="font_small" for="select">Sort by:</label>
+              <select class="sort-select">
+                <option value="original-order">Relevance</option>
+                <option value="price">Price</option>
+                <option value="random">Random</option>
+              </select>
+            </div>
           </div>
-
-          <!-- <div class="prod-ctrl__count">
-            <span>View</span>
-            <span>30 |</span>
-            <span>60 |</span>
-            <span>90</span>
-          </div> -->
 
         </div>
 
@@ -103,23 +98,15 @@
 
           </ul>
 
-          <button class="btn">View More</button>
+          <button class="btn view-more">View More</button>
 
         </div>
       </div>
     </div>
 
-    <!-- build:js scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="/bower_components/jquery/dist/jquery.js"></script>
-    <script src="/bower_components/Swiper/dist/js/swiper.js"></script>
-    <script src="/bower_components/mustache.js/mustache.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
+    <script src="scripts/vendor.js"></script>
 
-    <!-- build:js scripts/main.js -->
     <script src="scripts/main.js"></script>
-    <!-- endbuild -->
 
   </body>
 </html>
