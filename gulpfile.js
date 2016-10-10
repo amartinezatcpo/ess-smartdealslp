@@ -52,6 +52,12 @@ gulp.task('html', ['styles', 'scripts'], () => {
     .pipe(gulp.dest('dist'));
 });
 
+gulp.task('data', function () {
+  console.log('path runs!!');
+  return gulp.src('app/**/*.json')
+    .pipe(gulp.dest('dist/'))
+});
+
 gulp.task('images', () => {
   return gulp.src('app/images/**/*')
     .pipe($.cache($.imagemin({
@@ -119,7 +125,7 @@ gulp.task('wiredep', () => {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['html', 'images'], () => {
+gulp.task('build', ['html', 'data', 'images'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
